@@ -15,9 +15,10 @@ const App = () => {
 
   return (
     <div>
+      <Router>
       <div className='row'>
         <div className='col-md-3'>
-          <Router>
+          
             <NavBar />
             <Routes>
               <Route path="/" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="us" category="general" />} />
@@ -29,10 +30,11 @@ const App = () => {
               <Route path="/sports" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="sports" pageSize={pageSize} country="us" category="sports" />} />
               <Route path="/technology" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="technology" pageSize={pageSize} country="us" category="technology" />} />
             </Routes>
-          </Router>
+          
         </div>
         <div className='col-md-7'>
-          <Router>
+          
+          <NavBar />
             <Routes>
               <Route path="/" element={<News setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="us" category="general" />} />
               <Route path="/business" element={<News setProgress={setProgress} apiKey={apiKey} key="business" pageSize={pageSize} country="us" category="business" />} />
@@ -43,13 +45,14 @@ const App = () => {
               <Route path="/sports" element={<News setProgress={setProgress} apiKey={apiKey} key="sports" pageSize={pageSize} country="us" category="sports" />} />
               <Route path="/technology" element={<News setProgress={setProgress} apiKey={apiKey} key="technology" pageSize={pageSize} country="us" category="technology" />} />
             </Routes>
-          </Router>
+          
         </div>
         <div className='col-md-2'>
           <WeatherBar />
         </div>
       </div>
       <Footer />
+      </Router>
     </div>
   )
 
