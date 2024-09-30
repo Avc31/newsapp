@@ -1,25 +1,58 @@
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import React, { useState } from 'react'
+import NavBar from './components/NavBar';
+import News from './components/News';
+import LatestNews from './components/LatestNews';
+import WeatherBar from './components/WeatherBar';
+import Footer from './components/Footer';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+const App = () => {
+  const pageSize = 5;
+  const apiKey = process.env.REACT_APP_NEWS_API
+  const [progress, setProgress] = useState(0)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className='row'>
+        <div className='col-md-3'>
+          <Router>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="us" category="general" />} />
+              <Route path="/business" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="business" pageSize={pageSize} country="us" category="business" />} />
+              <Route path="/entertainment" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="entertainment" pageSize={pageSize} country="us" category="entertainment" />} />
+              <Route path="/general" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="us" category="general" />} />
+              <Route path="/health" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="health" pageSize={pageSize} country="us" category="health" />} />
+              <Route path="/science" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="science" pageSize={pageSize} country="us" category="science" />} />
+              <Route path="/sports" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="sports" pageSize={pageSize} country="us" category="sports" />} />
+              <Route path="/technology" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="technology" pageSize={pageSize} country="us" category="technology" />} />
+            </Routes>
+          </Router>
+        </div>
+        <div className='col-md-7'>
+          <Router>
+            <Routes>
+              <Route path="/" element={<News setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="us" category="general" />} />
+              <Route path="/business" element={<News setProgress={setProgress} apiKey={apiKey} key="business" pageSize={pageSize} country="us" category="business" />} />
+              <Route path="/entertainment" element={<News setProgress={setProgress} apiKey={apiKey} key="entertainment" pageSize={pageSize} country="us" category="entertainment" />} />
+              <Route path="/general" element={<News setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="us" category="general" />} />
+              <Route path="/health" element={<News setProgress={setProgress} apiKey={apiKey} key="health" pageSize={pageSize} country="us" category="health" />} />
+              <Route path="/science" element={<News setProgress={setProgress} apiKey={apiKey} key="science" pageSize={pageSize} country="us" category="science" />} />
+              <Route path="/sports" element={<News setProgress={setProgress} apiKey={apiKey} key="sports" pageSize={pageSize} country="us" category="sports" />} />
+              <Route path="/technology" element={<News setProgress={setProgress} apiKey={apiKey} key="technology" pageSize={pageSize} country="us" category="technology" />} />
+            </Routes>
+          </Router>
+        </div>
+        <div className='col-md-2'>
+          <WeatherBar />
+        </div>
+      </div>
+      <Footer />
     </div>
-  );
+  )
+
 }
 
 export default App;
