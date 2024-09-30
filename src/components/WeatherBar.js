@@ -26,7 +26,7 @@ const WeatherBar = () => {
 
   return (
     <div className='container' style={{marginTop:'80px'}}>
-      <h2 className='widget__title'>JUST IN</h2>
+      <h2 className='widget__title'>WEATHER</h2>
     <div className="card shadow-lg bg-light mt-3">    
       <div className="card-body">
         {loading && <p className="text-center">Loading...</p>}
