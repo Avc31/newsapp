@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import LatestNewsItem from './LatestNewsItem'; // Make sure you have a valid path to your LatestNewsItem component
 import PropTypes from 'prop-types';
 
-const LatestNews = (props) => {
+const LatestNews = ({ country = 'us', category = 'general', apiKey, pageSize = 8 }) => {
   const [headlines, setHeadlines] = useState([]);
 
   const updateLatestNews = async () => {
     try {
-      const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&pageSize=${props.pageSize}`;
+      const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}&pageSize=${pageSize}`;
       const response = await fetch(url);
       const parsedData = await response.json();
       setHeadlines(parsedData.articles); // Use 'articles' instead of 'headlines'
@@ -22,7 +22,7 @@ const LatestNews = (props) => {
   }, []); // Remove the comment here to avoid the eslint warning
 
   return (
-    <div className='container' style={{marginTop:'80px'}}>
+    <div className='container' style={{marginTop:'100px'}}>
       <h2 className='widget__title'>JUST IN</h2>
       <div className='row'>
         {headlines.map((element) => (
@@ -40,12 +40,6 @@ const LatestNews = (props) => {
       </div>
     </div>
   );
-};
-
-LatestNews.defaultProps = {
-  country: 'us',
-  pageSize: 8,
-  category: 'general',
 };
 
 LatestNews.propTypes = {

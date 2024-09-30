@@ -1,28 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import NewsItem from './NewsItem'; 
+import NewsItem from './NewsItem';
 import PropTypes from 'prop-types';
 
-const News = (props) => {
+const News = ({ country = 'us', category = 'general', apiKey, pageSize = 4 }) => {
   const [headlines, setHeadlines] = useState([]);
+  const [loadedHeadlines, setLoadedHeadlines] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   const updateNews = async () => {
     try {
-      const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&pageSize=${props.pageSize}`;
+      setLoading(true);
+      const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}&pageSize=${pageSize}&page=${page}`;
       const response = await fetch(url);
       const parsedData = await response.json();
-      setHeadlines(parsedData.articles); 
+
+      if (parsedData.articles) {
+        // Combine current headlines with new ones
+        setHeadlines((prevHeadlines) => {
+          const newHeadlines = parsedData.articles;
+
+          // Create a Set of URLs to filter out duplicates
+          const existingUrls = new Set(prevHeadlines.map(article => article.url));
+
+          // Filter out duplicates
+          const uniqueNewHeadlines = newHeadlines.filter(article => !existingUrls.has(article.url));
+
+          return [...prevHeadlines, ...uniqueNewHeadlines]; // Append unique new articles
+        });
+      }
     } catch (error) {
       console.error('Error fetching news:', error);
+    } finally {
+      setLoading(false); // Reset loading status
     }
   };
 
+
   useEffect(() => {
     updateNews();
-  }, []); 
+  }, [page]); // 
+
+  const loadMoreNews = () => {
+    setPage((prev) => prev + 1);
+  };
 
   return (
-    <div className='container' style={{marginTop:'80px'}}>
-      <h2>FactsGlobe Headlines</h2>
+    <div className='container' style={{ marginTop: '100px' }}>
+      <h2>FactsGlobe - {capitalizeFirstLetter(category)}</h2>
       <div className='row'>
         {headlines.map((element) => (
           <div className='col-md-6' key={element.url}>
@@ -37,14 +66,17 @@ const News = (props) => {
           </div>
         ))}
       </div>
+      {loading && <p>Loading...</p>}
+      <button
+        className='btn widget__title'
+        onClick={loadMoreNews}
+        disabled={loading} // Disable the button while loading
+        style={{ marginTop: '20px' }}
+      >
+        See More Stories
+      </button>
     </div>
   );
-};
-
-News.defaultProps = {
-  country: 'us',
-  pageSize: 8,
-  category: 'general',
 };
 
 News.propTypes = {

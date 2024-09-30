@@ -25,7 +25,7 @@ const WeatherBar = () => {
   }, []);
 
   return (
-    <div className='container' style={{marginTop:'80px'}}>
+    <div className='container' style={{marginTop:'100px'}}>
       <h2 className='widget__title'>WEATHER </h2>
     <div className="card shadow-lg bg-light mt-3">    
       <div className="card-body">

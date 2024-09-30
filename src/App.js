@@ -9,17 +9,18 @@ import Footer from './components/Footer';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => {
-  const pageSize = 5;
+  const pageSize = 4;
   const apiKey = process.env.REACT_APP_NEWS_API
   const [progress, setProgress] = useState(0)
 
   return (
-    <div>
+    <div className='container-fluid'>
       <Router>
+      <NavBar />
       <div className='row'>
         <div className='col-md-3'>
           
-            <NavBar />
+            
             <Routes>
               <Route path="/" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="us" category="general" />} />
               <Route path="/business" element={<LatestNews setProgress={setProgress} apiKey={apiKey} key="business" pageSize={pageSize} country="us" category="business" />} />
@@ -34,7 +35,6 @@ const App = () => {
         </div>
         <div className='col-md-7'>
           
-          <NavBar />
             <Routes>
               <Route path="/" element={<News setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="us" category="general" />} />
               <Route path="/business" element={<News setProgress={setProgress} apiKey={apiKey} key="business" pageSize={pageSize} country="us" category="business" />} />
