@@ -1,20 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import LatestNewsItem from './LatestNewsItem'; // Make sure you have a valid path to your LatestNewsItem component
 import PropTypes from 'prop-types';
+import { MockData } from './MockData';
 
-const LatestNews = ({ country = 'us', category = 'general', apiKey, pageSize = 8 }) => {
+const LatestNews = ({ country = 'us', category = 'general', apiKey, latestpageSize = 8 }) => {
   const [headlines, setHeadlines] = useState([]);
+
+  // const updateLatestNews = async () => {
+  //   try {
+  //     const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}&latestpageSize=${latestpageSize}`;
+  //     const response = await fetch(url);
+  //     const parsedData = await response.json();
+  //     setHeadlines(parsedData.articles); // Use 'articles' instead of 'headlines'
+  //   } catch (error) {
+  //     console.error('Error fetching LatestNews:', error);
+  //   }
+  // };
 
   const updateLatestNews = async () => {
     try {
-      const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}&pageSize=${pageSize}`;
+      const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}&pageSize=${latestpageSize}`;
       const response = await fetch(url);
-      const parsedData = await response.json();
-      setHeadlines(parsedData.articles); // Use 'articles' instead of 'headlines'
+  
+      // Check if the response is OK (status code 200)
+      if (response.ok) {
+        const parsedData = await response.json();
+        setHeadlines(parsedData.articles); // Use 'articles' from the API response
+      } else {
+        // If API response is not successful, use mock data
+        console.warn('API call failed, using mock data');
+        setHeadlines(MockData.articles); // Use mock data as fallback
+      }
     } catch (error) {
-      console.error('Error fetching LatestNews:', error);
+      // If fetch fails (e.g., network issues, API quota exhausted), use mock data
+      console.error('Error fetching LatestNews, using mock data:', error);
+      setHeadlines(MockData.articles); // Use mock data as fallback
     }
   };
+  
 
   useEffect(() => {
     updateLatestNews();
@@ -44,7 +67,7 @@ const LatestNews = ({ country = 'us', category = 'general', apiKey, pageSize = 8
 
 LatestNews.propTypes = {
   country: PropTypes.string,
-  pageSize: PropTypes.number,
+  latestpageSize: PropTypes.number,
   category: PropTypes.string,
 };
 

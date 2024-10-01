@@ -14,7 +14,7 @@ const NewsItem = (props) => {
     };
 
     const truncatedTitle = truncateText(title, 10);
-    const truncatedDescription = truncateText(description, 25);
+    const truncatedDescription = truncateText(description, 15);
 
     return (
         <div className="my-3">
